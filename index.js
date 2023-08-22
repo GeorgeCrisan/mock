@@ -12,23 +12,32 @@ const shuffleButton = document.getElementById("shuffle-button");
 const getRandomPosition = (max = 0, min = 0) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
-const changePosition = (element) => {
-  const top = getRandomPosition(container.clientHeight - 60) + "px";
-  const left = getRandomPosition(container.clientWidth - 160) + "px";
+// Util finction to change the position for an element
+const changePosition = (element, observedHeight, observedWidth) => {
+  const top = getRandomPosition((observedHeight || container.clientHeight) - 60) + "px";
+  const left = getRandomPosition((observedWidth || container.clientWidth) - 160) + "px";
   element.style.top = top;
   element.style.left = left;
 };
 
-const shuffle = () => {
+const shuffle = (observedHeight, observedWidth) => {
   if (boxElements?.length) {
     Array.from(boxElements).forEach((element) => {
-      changePosition(element);
+      changePosition(element, observedHeight, observedWidth);
     });
   }
 };
 
 shuffleButton.addEventListener("click", shuffle);
-window.addEventListener("resize", shuffle);
 
-// Misc
+// Extra with observer shuffle
+const observer = new ResizeObserver((entries) => {
+  const contentRect = entries[0].contentRect;
+  shuffle(contentRect.height, contentRect.width);
+});
 
+const addObserver = () => {
+  observer.observe(container);
+};
+
+window.addEventListener("resize", addObserver);
