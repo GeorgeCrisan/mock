@@ -14,7 +14,6 @@ const getRandomPosition = (max = 0, min = 0) =>
 
 // Util finction to change the position for an element
 const changePosition = (element, observedHeight, observedWidth) => {
-  console.log('*** what height', (observedHeight || container.clientHeight));
   const top = getRandomPosition((observedHeight || container.clientHeight) - 60) + "px";
   const left = getRandomPosition((observedWidth || container.clientWidth) - 160) + "px";
   element.style.top = top;
