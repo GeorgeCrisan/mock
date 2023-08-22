@@ -14,13 +14,14 @@ const getRandomPosition = (max = 0, min = 0) =>
 
 // Util finction to change the position for an element
 const changePosition = (element, observedHeight, observedWidth) => {
+  console.log('*** what height', (observedHeight || container.clientHeight));
   const top = getRandomPosition((observedHeight || container.clientHeight) - 60) + "px";
   const left = getRandomPosition((observedWidth || container.clientWidth) - 160) + "px";
   element.style.top = top;
   element.style.left = left;
 };
 
-const shuffle = (observedHeight, observedWidth) => {
+const shuffle = (_event, observedHeight, observedWidth) => {
   if (boxElements?.length) {
     Array.from(boxElements).forEach((element) => {
       changePosition(element, observedHeight, observedWidth);
@@ -33,7 +34,7 @@ shuffleButton.addEventListener("click", shuffle);
 // Extra with observer shuffle
 const observer = new ResizeObserver((entries) => {
   const contentRect = entries[0].contentRect;
-  shuffle(contentRect.height, contentRect.width);
+  shuffle(null, contentRect.height, contentRect.width);
 });
 
 const addObserver = () => {
